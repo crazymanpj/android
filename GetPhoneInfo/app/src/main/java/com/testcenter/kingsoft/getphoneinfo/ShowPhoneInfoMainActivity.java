@@ -61,6 +61,10 @@ public class ShowPhoneInfoMainActivity extends AppCompatActivity {
         String imei = tm.getDeviceId();
         TextView textview6 = (TextView)findViewById(R.id.TEXTVEIW6);
         textview6.setText("IMEI号为：" + imei);
+
+        String totalMemory = util.getTotalMemory();
+        TextView textview7 = (TextView)findViewById(R.id.TEXTVEIW7);
+        textview7.setText("手机内存为：" + totalMemory + "GB");
     }
 
     @Override
