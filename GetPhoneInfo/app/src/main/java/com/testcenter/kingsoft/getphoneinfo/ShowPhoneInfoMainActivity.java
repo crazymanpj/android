@@ -65,6 +65,10 @@ public class ShowPhoneInfoMainActivity extends AppCompatActivity {
         String totalMemory = util.getTotalMemory();
         TextView textview7 = (TextView)findViewById(R.id.TEXTVEIW7);
         textview7.setText("手机内存为：" + totalMemory + "GB");
+
+        String[] sdcardMemeory = util.getSDCardMemory();
+        TextView textview_sdcardmemeory = (TextView)findViewById(R.id.TEXTVEIW_SDCARDMEMORY);
+        textview_sdcardmemeory.setText("机身存储为：" + sdcardMemeory[0] + "/" + sdcardMemeory[1] +"GB");
     }
 
     @Override

@@ -1,13 +1,15 @@
 package com.testcenter.kingsoft.getphoneinfo;
 
 
+import android.os.Environment;
+import android.os.StatFs;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
-
 
 /**
  * Created by kingsoft on 2016/4/25.
@@ -54,5 +56,27 @@ public class Util {
         }
         return "";
     }
+
+    public String[] getSDCardMemory(){
+        String[] sdCardInfo = new String[2];
+        String state = Environment.getExternalStorageState();
+        Log.i("getExternalStorageState", state);
+        if (Environment.MEDIA_MOUNTED.equals(state)){
+            File sdcardDir = Environment.getExternalStorageDirectory();
+            StatFs sf = new StatFs(sdcardDir.getPath());
+            long bSize = sf.getBlockSizeLong();
+            long bCount = sf.getBlockCountLong();
+            long availBlocks = sf.getAvailableBlocksLong();
+
+            float totalsize = (float)bSize * bCount/(1024*1024*1024);
+            float availsize = (float)bSize * availBlocks/(1024*1024*1024);
+            DecimalFormat decimalFormat = new DecimalFormat(".00");
+            sdCardInfo[0] = decimalFormat.format(availsize);
+            sdCardInfo[1] = decimalFormat.format(totalsize);
+            Log.i("sdCardInfo[0]", "" + sdCardInfo[0]);
+            Log.i("sdCardInfo[1]", "" + sdCardInfo[1]);
+        }
+        return  sdCardInfo;
+}
 
 }
