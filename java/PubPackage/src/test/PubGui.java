@@ -43,6 +43,7 @@ public class PubGui {
 		JCheckBox cb0 = new JCheckBox("all");
 		cb0.setBounds(10, ycord, 150, 25);
 		panel.add(cb0);
+		cb0.addItemListener(new MyItemListener());
 		
 		JCheckBox cb1 = new JCheckBox("应用宝(800009)");
 		cb1.setBounds(10, ycord+30, 150, 25);
@@ -70,6 +71,7 @@ public class PubGui {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("点击按钮");
 				System.out.println(dirText.getText());
+				System.out.println(cb1.isSelected());
 				System.out.println(versioncodeText.getText());
 			}
 			
