@@ -2,6 +2,12 @@ package test;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.*;
+
+
 
 public class PubGui {
 	
@@ -18,6 +24,32 @@ public class PubGui {
 		placeComponents(panel);
 		
 		frame.setVisible(true);
+	}
+	
+	private static void updateText(String dirPath, String versioncode, boolean isupdateText) {
+		String gobalConfigFile = "gobal_config.py";
+        FileOutputStream out = null;
+        FileOutputStream outSTr = null;
+        BufferedOutputStream Buff = null;
+        FileWriter fw = null;
+        FileInputStream in = null;
+        
+        try{
+        	out = new FileOutputStream(new File("d:\\kuaipan\\python\\autopublishpackage\\script\\gobal_config.py"));
+     
+        }
+        catch(Exception e) {
+        	e.printStackTrace();
+        } finally {
+            try {
+                fw.close();
+                Buff.close();
+                outSTr.close();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 	}
 	
 	private static void placeComponents(JPanel panel) {
@@ -39,11 +71,14 @@ public class PubGui {
 		versioncodeText.setBounds(100, 50, 165, 25);
 		panel.add(versioncodeText);
 		
+		JCheckBox isupdateText = new JCheckBox("是否更新文案");
+		isupdateText.setBounds(300, 50, 150, 25);
+		panel.add(isupdateText);
+		
 		int ycord = 90;
 		JCheckBox cb0 = new JCheckBox("all");
 		cb0.setBounds(10, ycord, 150, 25);
 		panel.add(cb0);
-		cb0.addItemListener(new MyItemListener());
 		
 		JCheckBox cb1 = new JCheckBox("应用宝(800009)");
 		cb1.setBounds(10, ycord+30, 150, 25);
@@ -66,12 +101,69 @@ public class PubGui {
 		pubButton.setBounds(10, 300, 150, 40);
 		panel.add(pubButton);
 		
+		cb0.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JCheckBox jcb = (JCheckBox)e.getSource();
+				if (jcb.isSelected()) {
+					cb1.setSelected(true);
+					cb2.setSelected(true);
+					cb3.setSelected(true);
+					cb4.setSelected(true);
+				}else {
+					cb1.setSelected(false);
+					cb2.setSelected(false);
+					cb3.setSelected(false);
+					cb4.setSelected(false);
+				}
+			}
+		});
+		
 		pubButton.addActionListener(new ActionListener(){
 			
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("点击按钮");
 				System.out.println(dirText.getText());
-				System.out.println(cb1.isSelected());
+				System.out.println(isupdateText.isSelected());
+				if(cb1.isSelected()) {
+					String cmd = new String("python yyb.py");
+					try {
+						java.lang.Runtime.getRuntime().exec(cmd);
+					}
+
+					catch(Exception e1) {
+						e1.printStackTrace();
+					}		
+				};
+				if(cb2.isSelected()) {
+					String cmd = new String("python sougou.py");
+					try {
+						java.lang.Runtime.getRuntime().exec(cmd);
+					}
+
+					catch(Exception e1) {
+						e1.printStackTrace();
+					}		
+				};
+				if(cb3.isSelected()) {
+					String cmd = new String("python lenovo.py");
+					try {
+						java.lang.Runtime.getRuntime().exec(cmd);
+					}
+
+					catch(Exception e1) {
+						e1.printStackTrace();
+					}		
+				};
+				if(cb4.isSelected()) {
+					String cmd = new String("python oppo.py");
+					try {
+						java.lang.Runtime.getRuntime().exec(cmd);
+					}
+
+					catch(Exception e1) {
+						e1.printStackTrace();
+					}		
+				};
 				System.out.println(versioncodeText.getText());
 			}
 			
