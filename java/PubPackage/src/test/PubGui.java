@@ -20,9 +20,7 @@ public class PubGui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
-		
 		frame.add(panel);
-		
 		placeComponents(panel);
 		
 		frame.setVisible(true);
@@ -30,18 +28,12 @@ public class PubGui {
 	
 	private static void updateConfig(String dirPath, String versioncode, boolean isupdateText) {
 		System.out.println("updateConfig");
-		System.out.println(dirPath);
-		System.out.println(versioncode);
-		System.out.println(isupdateText);
-		String gobalConfigFile = "gobal_config.py";
         FileOutputStream out = null;
-        FileOutputStream outSTr = null;
-        BufferedOutputStream Buff = null;
-        FileWriter fw = null;
         FileInputStream in = null;
         InputStreamReader isr = null;
         
-        String configFilePath = "d:\\kuaipan\\python\\autopublishpackage\\script\\gobal_config.py";
+        String configFilePath = "gobal_config.py";
+        System.out.println(System.getProperty("user.dir"));
         
         if(dirPath.equals("")) {
         	dirPath = "dirtext";
@@ -52,7 +44,7 @@ public class PubGui {
 
         try{
         	in = new FileInputStream(new File(configFilePath));
-        	isr = new InputStreamReader(in);
+        	isr = new InputStreamReader(in, "UTF-8");
         	int ch = 0;
         	String text = "";
         	while((ch = isr.read()) != -1) {
@@ -98,11 +90,10 @@ public class PubGui {
             System.out.println(text);
             File file = new File(configFilePath);
             try {  
-//                FileWriter fileWritter = new FileWriter(file.getAbsoluteFile(), true); 
-//                BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
                 out = new FileOutputStream(new File(configFilePath));
-                out.write(text.getBytes());
-                out.close(); 
+                OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8"); 
+                osw.write(text);
+                osw.close(); 
                 System.out.println("end");
              } catch (IOException e) {  
             	 e.printStackTrace();  
@@ -114,10 +105,9 @@ public class PubGui {
         	e.printStackTrace();
         } finally {
             try {
-//                fw.close();
-//                Buff.close();
-//                outSTr.close();
-//                out.close();
+            	in.close();
+            	isr.close();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -194,17 +184,23 @@ public class PubGui {
 			
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("点击按钮");
-				System.out.println(dirText.getText());
 				String dirPath = dirText.getText();
+
+				if(dirPath.lastIndexOf('\\') == (dirPath.length() -1)) {
+					dirPath = dirPath.substring(0, dirPath.length() - 1);
+				}
 				String versionCode = versioncodeText.getText();
 				boolean isUpdateText = isupdateText.isSelected();
-				System.out.println(isupdateText.isSelected());
+				System.out.println(versionCode + " " + dirPath);
+				System.out.println(isUpdateText);
 				updateConfig(dirPath, versionCode, isUpdateText);
 				
 				if(cb1.isSelected()) {
+					System.out.println("pub yyb");
 					String cmd = new String("python yyb.py");
 					try {
-						java.lang.Runtime.getRuntime().exec(cmd);
+						Process process = java.lang.Runtime.getRuntime().exec(cmd);
+
 					}
 
 					catch(Exception e1) {
