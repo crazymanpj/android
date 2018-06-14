@@ -30,6 +30,8 @@ public class PubGui {
 	
 	private static void updateConfig(String dirPath, String versioncode, boolean isupdateText) {
 		System.out.println("updateConfig");
+		System.out.println(dirPath);
+		System.out.println(versioncode);
 		System.out.println(isupdateText);
 		String gobalConfigFile = "gobal_config.py";
         FileOutputStream out = null;
@@ -39,20 +41,27 @@ public class PubGui {
         FileInputStream in = null;
         InputStreamReader isr = null;
         
+        String configFilePath = "d:\\kuaipan\\python\\autopublishpackage\\script\\gobal_config.py";
+        
+        if(dirPath.equals("")) {
+        	dirPath = "dirtext";
+        }
+        if(versioncode.equals("")) {
+        	versioncode = "vertext";
+        }
+
         try{
-        	in = new FileInputStream(new File("C:\\Users\\PJ\\Desktop\\gobal_config.py"));
+        	in = new FileInputStream(new File(configFilePath));
         	isr = new InputStreamReader(in);
         	int ch = 0;
         	String text = "";
         	while((ch = isr.read()) != -1) {
-//        		System.out.print((char) ch);
         		text = text + (char) ch;
         	}
         	
-//        	System.out.println(text);
         	String pattern = "(DIR = r')(\\S+)(')";
         	String pattern2 = "(APKVER = ')(\\S+)(')";
-        	String pattern3 = "(IS_UPDATE_TEXT = )(\\S)";
+        	String pattern3 = "(IS_UPDATE_TEXT = )(\\S+)";
         	
         	Pattern r = Pattern.compile(pattern);
         	Matcher m = r.matcher(text);
@@ -72,7 +81,7 @@ public class PubGui {
             }
           
         	Pattern r3 = Pattern.compile(pattern3);
-        	Matcher m3 = r.matcher(text);
+        	Matcher m3 = r3.matcher(text);
             if (m3.find()) {
             	if(isupdateText == true) {
             		System.out.println(m3.group(2));
@@ -87,6 +96,18 @@ public class PubGui {
             }
 
             System.out.println(text);
+            File file = new File(configFilePath);
+            try {  
+//                FileWriter fileWritter = new FileWriter(file.getAbsoluteFile(), true); 
+//                BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+                out = new FileOutputStream(new File(configFilePath));
+                out.write(text.getBytes());
+                out.close(); 
+                System.out.println("end");
+             } catch (IOException e) {  
+            	 e.printStackTrace();  
+             }  
+           
      
         }
         catch(Exception e) {
@@ -122,8 +143,8 @@ public class PubGui {
 		versioncodeText.setBounds(100, 50, 165, 25);
 		panel.add(versioncodeText);
 		
-		JCheckBox isupdateText = new JCheckBox("是否更新文案");
-		isupdateText.setBounds(300, 50, 150, 25);
+		JCheckBox isupdateText = new JCheckBox("是否更新文案(文案请在text.txt文件里面填写)");
+		isupdateText.setBounds(300, 50, 300, 25);
 		panel.add(isupdateText);
 		
 		int ycord = 90;
