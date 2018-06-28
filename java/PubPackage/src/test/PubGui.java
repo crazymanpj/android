@@ -34,7 +34,6 @@ public class PubGui {
         
         String configFilePath = "gobal_config.py";
         System.out.println(System.getProperty("user.dir"));
-        
         if(dirPath.equals("")) {
         	dirPath = "dirtext";
         }
@@ -135,7 +134,9 @@ public class PubGui {
 		
 		JCheckBox isupdateText = new JCheckBox("是否更新文案(文案请在text.txt文件里面填写)");
 		isupdateText.setBounds(300, 50, 300, 25);
+		isupdateText.setSelected(true);
 		panel.add(isupdateText);
+		
 		
 		int ycord = 90;
 		JCheckBox cb0 = new JCheckBox("all");
@@ -159,8 +160,20 @@ public class PubGui {
 		cb4.setBounds(10, ycord+30*4, 150, 25);
 		panel.add(cb4);
 		
+		JCheckBox cb5 = new JCheckBox("应用汇(800014)");
+		cb5.setBounds(10, ycord + 30*5, 150, 25);
+		panel.add(cb5);
+		
+		JCheckBox cb6 = new JCheckBox("联通沃商店(800015)");
+		cb6.setBounds(10, ycord + 30*6, 150, 25);
+		panel.add(cb6);
+		
+		JCheckBox cb7 = new JCheckBox("VIVO(800026)");
+		cb7.setBounds(10, ycord + 30*7, 150, 25);
+		panel.add(cb7);
+		
 		JButton pubButton = new JButton("一键发布");
-		pubButton.setBounds(10, 300, 150, 40);
+		pubButton.setBounds(10, 350, 150, 40);
 		panel.add(pubButton);
 		
 		cb0.addActionListener(new ActionListener() {
@@ -171,11 +184,17 @@ public class PubGui {
 					cb2.setSelected(true);
 					cb3.setSelected(true);
 					cb4.setSelected(true);
+					cb5.setSelected(true);
+					cb6.setSelected(true);
+					cb7.setSelected(true);
 				}else {
 					cb1.setSelected(false);
 					cb2.setSelected(false);
 					cb3.setSelected(false);
 					cb4.setSelected(false);
+					cb5.setSelected(false);
+					cb6.setSelected(false);
+					cb7.setSelected(false);
 				}
 			}
 		});
@@ -185,6 +204,7 @@ public class PubGui {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("点击按钮");
 				String dirPath = dirText.getText();
+				MyWinExecuter exe = new MyWinExecuter();
 
 				if(dirPath.lastIndexOf('\\') == (dirPath.length() -1)) {
 					dirPath = dirPath.substring(0, dirPath.length() - 1);
@@ -196,46 +216,39 @@ public class PubGui {
 				updateConfig(dirPath, versionCode, isUpdateText);
 				
 				if(cb1.isSelected()) {
-					System.out.println("pub yyb");
 					String cmd = new String("python yyb.py");
-					try {
-						Process process = java.lang.Runtime.getRuntime().exec(cmd);
-
-					}
-
-					catch(Exception e1) {
-						e1.printStackTrace();
-					}		
+					exe.exeCute(cmd);	
+					System.out.println("end pub yyb");
 				};
 				if(cb2.isSelected()) {
 					String cmd = new String("python sougou.py");
-					try {
-						java.lang.Runtime.getRuntime().exec(cmd);
-					}
-
-					catch(Exception e1) {
-						e1.printStackTrace();
-					}		
+					exe.exeCute(cmd);	
+					System.out.println("end pub sogou");
 				};
 				if(cb3.isSelected()) {
 					String cmd = new String("python lenovo.py");
-					try {
-						java.lang.Runtime.getRuntime().exec(cmd);
-					}
-
-					catch(Exception e1) {
-						e1.printStackTrace();
-					}		
+					exe.exeCute(cmd);
+					System.out.println("end pub lenovo");
 				};
 				if(cb4.isSelected()) {
 					String cmd = new String("python oppo.py");
-					try {
-						java.lang.Runtime.getRuntime().exec(cmd);
-					}
-
-					catch(Exception e1) {
-						e1.printStackTrace();
-					}		
+					exe.exeCute(cmd);	
+					System.out.println("end pub oppo");
+				};
+				if(cb5.isSelected()) {
+					String cmd = new String("python yyh.py");
+					exe.exeCute(cmd);	
+					System.out.println("end pub yyh");
+				};
+				if(cb6.isSelected()) {
+					String cmd = new String("python wostore.py");
+					exe.exeCute(cmd);	
+					System.out.println("end pub wostore");
+				};
+				if(cb7.isSelected()) {
+					String cmd = new String("python vivo.py");
+					exe.exeCute(cmd);	
+					System.out.println("end pub vivo");
 				};
 				System.out.println(versioncodeText.getText());
 			}
