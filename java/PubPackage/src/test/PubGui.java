@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.*;
 import java.util.regex.*;
+import java.util.concurrent.TimeUnit;
 
 
 
@@ -172,8 +173,12 @@ public class PubGui {
 		cb7.setBounds(10, ycord + 30*7, 150, 25);
 		panel.add(cb7);
 		
+		JCheckBox cb8 = new JCheckBox("安智市场(800005)");
+		cb8.setBounds(10, ycord + 30*8, 150, 25);
+		panel.add(cb8);
+		
 		JButton pubButton = new JButton("一键发布");
-		pubButton.setBounds(10, 350, 150, 40);
+		pubButton.setBounds(10, 380, 150, 40);
 		panel.add(pubButton);
 		
 		cb0.addActionListener(new ActionListener() {
@@ -187,6 +192,7 @@ public class PubGui {
 					cb5.setSelected(true);
 					cb6.setSelected(true);
 					cb7.setSelected(true);
+					cb8.setSelected(true);
 				}else {
 					cb1.setSelected(false);
 					cb2.setSelected(false);
@@ -195,6 +201,7 @@ public class PubGui {
 					cb5.setSelected(false);
 					cb6.setSelected(false);
 					cb7.setSelected(false);
+					cb8.setSelected(false);
 				}
 			}
 		});
@@ -214,6 +221,12 @@ public class PubGui {
 				System.out.println(versionCode + " " + dirPath);
 				System.out.println(isUpdateText);
 				updateConfig(dirPath, versionCode, isUpdateText);
+				try {
+					TimeUnit.SECONDS.sleep(3);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				if(cb1.isSelected()) {
 					String cmd = new String("python yyb.py");
@@ -249,6 +262,11 @@ public class PubGui {
 					String cmd = new String("python vivo.py");
 					exe.exeCute(cmd);	
 					System.out.println("end pub vivo");
+				};
+				if(cb8.isSelected()) {
+					String cmd = new String("python anzhi.py");
+					exe.exeCute(cmd);	
+					System.out.println("end pub anzhi");
 				};
 				System.out.println(versioncodeText.getText());
 			}
