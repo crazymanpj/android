@@ -27,8 +27,8 @@ public class PubGui {
 		frame.setVisible(true);
 	}
 	
-	private static void updateConfig(String dirPath, String versioncode, boolean isupdateText) {
-		System.out.println("updateConfig");
+	private static boolean updateConfig(String dirPath, String versioncode, boolean isupdateText) {
+//		System.out.println("updateConfig");
         FileOutputStream out = null;
         FileInputStream in = null;
         InputStreamReader isr = null;
@@ -36,10 +36,12 @@ public class PubGui {
         String configFilePath = "gobal_config.py";
         System.out.println(System.getProperty("user.dir"));
         if(dirPath.equals("")) {
-        	dirPath = "dirtext";
+//        	dirPath = "dirtext";
+        	return false;
         }
         if(versioncode.equals("")) {
-        	versioncode = "vertext";
+//        	versioncode = "vertext";
+        	return false;
         }
 
         try{
@@ -95,14 +97,17 @@ public class PubGui {
                 osw.write(text);
                 osw.close(); 
                 System.out.println("end");
+                return true;
              } catch (IOException e) {  
             	 e.printStackTrace();  
+            	 return false;
              }  
            
      
         }
         catch(Exception e) {
         	e.printStackTrace();
+        	return false;
         } finally {
             try {
             	in.close();
@@ -110,6 +115,7 @@ public class PubGui {
 
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
         }
 	}
@@ -173,12 +179,8 @@ public class PubGui {
 		cb7.setBounds(10, ycord + 30*7, 150, 25);
 		panel.add(cb7);
 		
-		JCheckBox cb8 = new JCheckBox("安智市场(800005)");
-		cb8.setBounds(10, ycord + 30*8, 150, 25);
-		panel.add(cb8);
-		
 		JButton pubButton = new JButton("一键发布");
-		pubButton.setBounds(10, 380, 150, 40);
+		pubButton.setBounds(10, 350, 150, 40);
 		panel.add(pubButton);
 		
 		cb0.addActionListener(new ActionListener() {
@@ -192,7 +194,6 @@ public class PubGui {
 					cb5.setSelected(true);
 					cb6.setSelected(true);
 					cb7.setSelected(true);
-					cb8.setSelected(true);
 				}else {
 					cb1.setSelected(false);
 					cb2.setSelected(false);
@@ -201,7 +202,6 @@ public class PubGui {
 					cb5.setSelected(false);
 					cb6.setSelected(false);
 					cb7.setSelected(false);
-					cb8.setSelected(false);
 				}
 			}
 		});
@@ -213,14 +213,22 @@ public class PubGui {
 				String dirPath = dirText.getText();
 				MyWinExecuter exe = new MyWinExecuter();
 
-				if(dirPath.lastIndexOf('\\') == (dirPath.length() -1)) {
+				if(dirPath.length() == 0) {
+					System.out.println("路径输入为空");
+					System.exit(-1);
+				}
+				else if(dirPath.lastIndexOf('\\') == (dirPath.length() -1)) {
 					dirPath = dirPath.substring(0, dirPath.length() - 1);
 				}
 				String versionCode = versioncodeText.getText();
 				boolean isUpdateText = isupdateText.isSelected();
 				System.out.println(versionCode + " " + dirPath);
 				System.out.println(isUpdateText);
-				updateConfig(dirPath, versionCode, isUpdateText);
+				if (updateConfig(dirPath, versionCode, isUpdateText) == false) {
+					System.out.println("更新配置文件失败");
+					System.exit(-2);
+				}
+				
 				try {
 					TimeUnit.SECONDS.sleep(3);
 				} catch (InterruptedException e1) {
@@ -262,11 +270,6 @@ public class PubGui {
 					String cmd = new String("python vivo.py");
 					exe.exeCute(cmd);	
 					System.out.println("end pub vivo");
-				};
-				if(cb8.isSelected()) {
-					String cmd = new String("python anzhi.py");
-					exe.exeCute(cmd);	
-					System.out.println("end pub anzhi");
 				};
 				System.out.println(versioncodeText.getText());
 			}
